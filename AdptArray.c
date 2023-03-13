@@ -83,8 +83,7 @@ PElement GetAdptArrayAt(PAdptArray pArr, int index)
 
 	if ((pArr->pElemArr)[index] == NULL)
 		return NULL;
-	if ((newpElemArr = (PElement *)malloc(sizeof(PElement))) == NULL)
-		return FAIL;
+		
 	newpElemArr = pArr->copyFunc((pArr->pElemArr)[index]);
 	return newpElemArr;
 }
