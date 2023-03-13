@@ -34,7 +34,8 @@ void DeleteAdptArray(PAdptArray pArr)
 		return;
 	for (i = 0; i < pArr->ArrSize; ++i)
 	{
-		pArr->delFunc((pArr->pElemArr)[i]);
+		if ((pArr->pElemArr)[i] != NULL)
+			pArr->delFunc((pArr->pElemArr)[i]);
 	}
 	free(pArr->pElemArr);
 	free(pArr);
@@ -48,13 +49,16 @@ Result SetAdptArrayAt(PAdptArray pArr, int idx, PElement pNewElem)
 
 	if (idx >= pArr->ArrSize)
 	{
-
 		// Extend Array
 		if ((newpElemArr = (PElement *)calloc((idx + 1), sizeof(PElement))) == NULL)
 			return FAIL;
 		memcpy(newpElemArr, pArr->pElemArr, (pArr->ArrSize) * sizeof(PElement));
 		free(pArr->pElemArr);
 		pArr->pElemArr = newpElemArr;
+		pArr->ArrSize = idx + 1;
+		(pArr->pElemArr)[idx] = pArr->copyFunc(pNewElem);
+
+		return SUCCESS;
 	}
 
 	// Delete Previous Elem
@@ -72,21 +76,16 @@ Result SetAdptArrayAt(PAdptArray pArr, int idx, PElement pNewElem)
 
 PElement GetAdptArrayAt(PAdptArray pArr, int index)
 {
-	PAdptArray pCurrArr = pArr;
 
 	PElement newpElemArr;
 	if (pArr == NULL || pArr->ArrSize <= index)
 		return FAIL;
 
+	if ((pArr->pElemArr)[index] == NULL)
+		return NULL;
 	if ((newpElemArr = (PElement *)malloc(sizeof(PElement))) == NULL)
 		return FAIL;
-	int count = 0;
-	while (count < index)
-	{
-		count++;
-		// pCurrArr = pCurrArr->pElemArr;
-	}
-	newpElemArr = pCurrArr->copyFunc((pCurrArr->pElemArr)[count]);
+	newpElemArr = pArr->copyFunc((pArr->pElemArr)[index]);
 	return newpElemArr;
 }
 
@@ -99,4 +98,9 @@ int GetAdptArraySize(PAdptArray pArr)
 
 void PrintDB(PAdptArray pArr)
 {
+	for (int i = 0; i < pArr->ArrSize; i++)
+	{
+		if ((pArr->pElemArr)[i] != NULL)
+			pArr->printFunc((pArr->pElemArr)[i]);
+	}
 }
