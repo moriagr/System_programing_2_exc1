@@ -32,7 +32,7 @@ void DeleteAdptArray(PAdptArray pArr)
 	int i;
 	if (pArr == NULL)
 		return;
-	for (i = 0; i < pArr->ArrSize; ++i)
+	for (i = 0; i < pArr->ArrSize; i++)
 	{
 		if ((pArr->pElemArr)[i] != NULL)
 			pArr->delFunc((pArr->pElemArr)[i]);
@@ -41,36 +41,36 @@ void DeleteAdptArray(PAdptArray pArr)
 	free(pArr);
 }
 
-Result SetAdptArrayAt(PAdptArray pArr, int idx, PElement pNewElem)
+Result SetAdptArrayAt(PAdptArray pArr, int index, PElement pNewElem)
 {
 	PElement *newpElemArr;
 	if (pArr == NULL)
 		return FAIL;
 
-	if (idx >= pArr->ArrSize)
+	if (index >= pArr->ArrSize)
 	{
 		// Extend Array
-		if ((newpElemArr = (PElement *)calloc((idx + 1), sizeof(PElement))) == NULL)
+		if ((newpElemArr = (PElement *)calloc((index + 1), sizeof(PElement))) == NULL)
 			return FAIL;
 		memcpy(newpElemArr, pArr->pElemArr, (pArr->ArrSize) * sizeof(PElement));
 		free(pArr->pElemArr);
 		pArr->pElemArr = newpElemArr;
-		pArr->ArrSize = idx + 1;
-		(pArr->pElemArr)[idx] = pArr->copyFunc(pNewElem);
+		pArr->ArrSize = index + 1;
+		(pArr->pElemArr)[index] = pArr->copyFunc(pNewElem);
 
 		return SUCCESS;
 	}
 
 	// Delete Previous Elem
 
-	PElement *temp = (pArr->pElemArr)[idx];
-	free((pArr->pElemArr)[idx]);
+	PElement *temp = (pArr->pElemArr)[index];
+	free((pArr->pElemArr)[index]);
 	pArr->delFunc(temp);
 
-	(pArr->pElemArr)[idx] = pArr->copyFunc(pNewElem);
+	(pArr->pElemArr)[index] = pArr->copyFunc(pNewElem);
 
 	// Update Array Size
-	pArr->ArrSize = (idx >= pArr->ArrSize) ? (idx + 1) : pArr->ArrSize;
+	pArr->ArrSize = (index >= pArr->ArrSize) ? (index + 1) : pArr->ArrSize;
 	return SUCCESS;
 }
 
