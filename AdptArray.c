@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "AdptArray.h"
 
+
+//I used part of the code from the previous semester- part 1 of the course, from the answers that were on the model to the test moed A question 4.
 typedef struct AdptArray_
 {
 	int ArrSize;
