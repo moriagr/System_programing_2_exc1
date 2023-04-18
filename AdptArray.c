@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include "AdptArray.h"
 
-
-//I used part of the code from the previous semester- part 1 of the course, from the answers that were on the model to the test moed A question 4.
+// I used part of the code from the previous semester- part 1 of the course, from the answers that were on the model to the test moed A question 4.
 typedef struct AdptArray_
 {
 	int ArrSize;
@@ -64,11 +63,12 @@ Result SetAdptArrayAt(PAdptArray pArr, int index, PElement pNewElem)
 	}
 
 	// Delete Previous Elem
-
 	PElement *temp = (pArr->pElemArr)[index];
-	free((pArr->pElemArr)[index]);
-	pArr->delFunc(temp);
-
+	if (temp != NULL)
+	{
+		// free((pArr->pElemArr)[index]);
+		pArr->delFunc(temp);
+	}
 	(pArr->pElemArr)[index] = pArr->copyFunc(pNewElem);
 
 	// Update Array Size
@@ -85,7 +85,7 @@ PElement GetAdptArrayAt(PAdptArray pArr, int index)
 
 	if ((pArr->pElemArr)[index] == NULL)
 		return NULL;
-		
+
 	newpElemArr = pArr->copyFunc((pArr->pElemArr)[index]);
 	return newpElemArr;
 }
