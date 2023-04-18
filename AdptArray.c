@@ -66,7 +66,6 @@ Result SetAdptArrayAt(PAdptArray pArr, int index, PElement pNewElem)
 	PElement *temp = (pArr->pElemArr)[index];
 	if (temp != NULL)
 	{
-		// free((pArr->pElemArr)[index]);
 		pArr->delFunc(temp);
 	}
 	(pArr->pElemArr)[index] = pArr->copyFunc(pNewElem);
